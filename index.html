@@ -1,0 +1,942 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>માતૃભૂમિ વંદના ટ્રસ્ટ - યોગદાન સર્ટિફિકેટ</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f8f8f8;
+            color: #333;
+        }
+        .main-title {
+            text-align: center;
+            color: #FF9933;
+            font-size: 26px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #eee;
+        }
+        .main-container {
+            display: flex;
+            gap: 30px;
+            max-width: 1400px;
+            margin: 0 auto;
+            height: calc(100vh - 100px);
+        }
+        .form-container {
+            flex: 0 0 420px;
+            background-color: white;
+            padding: 25px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+        }
+        .form-header {
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 28px;
+            font-weight: 600;
+            color: #444;
+        }
+        .preview-container {
+            flex: 1;
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            position: relative;
+            overflow: hidden;
+        }
+        .preview-container::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 100%);
+            z-index: 1;
+            pointer-events: none;
+        }
+        .form-group {
+            margin-bottom: 18px;
+        }
+        label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: 500;
+            color: #444;
+            font-size: 14px;
+        }
+        input[type="text"], input[type="number"] {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-size: 14px;
+        }
+        button {
+            padding: 10px 16px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+        .form-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin: 20px 0;
+        }
+        .form-actions-row {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .btn-download {
+            background-color: #2196F3;
+            color: white;
+            padding: 15px 25px;
+            font-size: 16px;
+            font-weight: bold;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            width: 100%;
+            text-align: center;
+        }
+        .btn-download:hover {
+            background-color: #0b7dda;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+        .btn-whatsapp {
+            background-color: #25D366;
+            color: white;
+            padding: 10px 16px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .btn-whatsapp:hover {
+            background-color: #128C7E;
+        }
+        .btn-reset-font {
+            background-color: #607d8b;
+            color: white;
+        }
+        .btn-reset-font:hover {
+            background-color: #455a64;
+        }
+        .btn-reset-all {
+            background-color: #f44336;
+            color: white;
+        }
+        .btn-reset-all:hover {
+            background-color: #da190b;
+        }
+        .btn-reset-position {
+            background-color: #9E9E9E;
+            color: white;
+            margin-top: 10px;
+            width: 100%;
+        }
+        .btn-reset-position:hover {
+            background-color: #757575;
+        }
+        #certificateCanvas {
+            max-width: 100%;
+            max-height: calc(100% - 40px);
+            object-fit: contain;
+            margin: 0 auto;
+            border: 1px solid #eee;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            background-color: white;
+            display: block;
+        }
+        .preview-actions {
+            display: flex;
+            justify-content: center;
+            margin-top: 15px;
+        }
+        
+        /* Font Controls */
+        .font-controls {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 15px;
+            padding: 15px;
+            background-color: #f5f5f5;
+            border-radius: 6px;
+            flex-wrap: wrap;
+        }
+        .font-size-control {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .font-size-control input[type="range"] {
+            width: 100px;
+            height: 4px;
+            background: #e0e0e0;
+            border-radius: 2px;
+            -webkit-appearance: none;
+        }
+        .font-size-control input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 14px;
+            height: 14px;
+            background: #2196F3;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+        .font-size-value {
+            width: 40px;
+            text-align: center;
+            font-size: 12px;
+            color: #666;
+        }
+        .color-picker-container {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .color-picker-container label {
+            margin-bottom: 0;
+            font-size: 13px;
+        }
+        .color-picker {
+            width: 30px;
+            height: 30px;
+            padding: 0;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        
+        /* Position Controls */
+        .position-controls {
+            margin-top: 15px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            overflow: hidden;
+        }
+        .position-header {
+            background-color: #607d8b;
+            color: white;
+            padding: 10px 15px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .position-header h3 {
+            margin: 0;
+            font-size: 16px;
+        }
+        .position-header span {
+            font-size: 18px;
+        }
+        .position-content {
+            padding: 15px;
+            background-color: white;
+            display: none;
+            max-height: 250px;
+            overflow-y: auto;
+        }
+        .position-content.show {
+            display: block;
+        }
+        .position-control-group {
+            margin-bottom: 15px;
+        }
+        .position-control-group h4 {
+            margin: 0 0 8px 0;
+            font-size: 14px;
+            font-weight: bold;
+            color: #333;
+        }
+        .position-row {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+        .position-input {
+            flex: 1;
+            min-width: 0;
+        }
+        .position-input label {
+            font-size: 12px;
+            color: #666;
+            margin-bottom: 3px;
+            display: block;
+        }
+        .position-control {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+        .position-control-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .position-control input[type="range"] {
+            flex: 1;
+            min-width: 60px;
+            height: 4px;
+            background: #e0e0e0;
+            border-radius: 2px;
+            -webkit-appearance: none;
+        }
+        .position-control input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 14px;
+            height: 14px;
+            background: #2196F3;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+        .position-value {
+            width: 50px;
+            text-align: center;
+            font-size: 12px;
+            color: #666;
+        }
+        .reset-position-btn {
+            background: none;
+            border: none;
+            color: #2196F3;
+            cursor: pointer;
+            font-size: 12px;
+            padding: 2px 5px;
+            margin-left: 5px;
+        }
+        
+        /* WhatsApp Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 100;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+        }
+        .modal-content {
+            background-color: white;
+            margin: 15% auto;
+            padding: 20px;
+            border-radius: 8px;
+            width: 350px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        .modal-header h3 {
+            margin: 0;
+            color: #333;
+        }
+        .close {
+            color: #aaa;
+            font-size: 24px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .close:hover {
+            color: #333;
+        }
+        .modal-body {
+            margin-bottom: 20px;
+        }
+        .modal-body input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        .modal-footer {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+        .modal-footer button {
+            padding: 8px 16px;
+        }
+        .btn-share {
+            background-color: #25D366;
+            color: white;
+        }
+        .btn-share:hover {
+            background-color: #128C7E;
+        }
+        .btn-cancel {
+            background-color: #f44336;
+            color: white;
+        }
+        .btn-cancel:hover {
+            background-color: #da190b;
+        }
+
+        /* Preview styling */
+        .certificate-frame {
+            border: 15px solid #e0e0e0;
+            border-radius: 5px;
+            box-shadow: 0 0 0 1px #bbb, 0 10px 25px rgba(0,0,0,0.15);
+            background: white;
+            padding: 10px;
+            height: calc(100% - 50px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+        .certificate-frame::after {
+            content: "";
+            position: absolute;
+            top: 5px;
+            left: 5px;
+            right: 5px;
+            bottom: 5px;
+            border: 1px solid rgba(0,0,0,0.15);
+            pointer-events: none;
+        }
+        .certificate-frame::before {
+            content: "";
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            right: 15px;
+            bottom: 15px;
+            border: 1px solid rgba(0,0,0,0.1);
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="main-title">માતૃભૂમિ વંદના ટ્રસ્ટ - યોગદાન સર્ટિફિકેટ</div>
+    
+    <div class="main-container">
+        <div class="form-container">
+            <div class="form-header">જરૂરી ડેટા અહીં ભરો</div>
+            
+            <div class="form-group">
+                <label for="field1">પૂરું નામ (Full Name)</label>
+                <input type="text" id="field1" placeholder="Enter full name">
+            </div>
+            
+            <div class="form-group">
+                <label for="field3">ઈંટ ની સંખ્યા (Number of Bricks)</label>
+                <input type="text" id="field3" placeholder="Enter number of bricks">
+            </div>
+            
+            <div class="form-group">
+                <label for="field4">યોગદાન (Donation)</label>
+                <input type="text" id="field4" placeholder="Auto-calculated" readonly>
+            </div>
+
+            <!-- Font Controls -->
+            <div class="font-controls">
+                <div class="font-size-control">
+                    <label for="commonFontSize">Font Size:</label>
+                    <input type="range" id="commonFontSize" min="20" max="100" value="75">
+                    <span class="font-size-value">75px</span>
+                </div>
+                <div class="color-picker-container">
+                    <label for="fontColor">Color:</label>
+                    <input type="color" id="fontColor" value="#FF0000" class="color-picker">
+                </div>
+            </div>
+
+            <div class="form-actions">
+                <div class="form-actions-row">
+                    <button class="btn-reset-font" id="formResetFontBtn">Reset Font Style</button>
+                    <button class="btn-reset-all" id="formResetBtn">Reset All Data</button>
+                    <button class="btn-whatsapp" id="whatsappBtn">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="white">
+                            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+                        </svg>
+                        Share
+                    </button>
+                </div>
+                <button class="btn-download" id="formDownloadBtn">Download Certificate</button>
+            </div>
+
+            <!-- Position Controls (Collapsible) -->
+            <div class="position-controls">
+                <div class="position-header" id="positionHeader">
+                    <h3>Position Adjustment</h3>
+                    <span>+</span>
+                </div>
+                <div class="position-content" id="positionContent">
+                    <div class="position-control-group">
+                        <h4>પૂરું નામ (Full Name)</h4>
+                        <div class="position-row">
+                            <div class="position-input">
+                                <label>X Position</label>
+                                <div class="position-control">
+                                    <div class="position-control-row">
+                                        <input type="number" id="pos1x" value="570" style="width: 120px;">
+                                        <button class="reset-position-btn" data-field="pos1x" data-value="570">↻</button>
+                                    </div>
+                                    <input type="range" id="pos1x-slider" min="0" max="2000" value="570">
+                                </div>
+                            </div>
+                            <div class="position-input">
+                                <label>Y Position</label>
+                                <div class="position-control">
+                                    <div class="position-control-row">
+                                        <input type="number" id="pos1y" value="1558" style="width: 120px;">
+                                        <button class="reset-position-btn" data-field="pos1y" data-value="1558">↻</button>
+                                    </div>
+                                    <input type="range" id="pos1y-slider" min="0" max="3500" value="1558">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="position-control-group">
+                        <h4>ઈંટ ની સંખ્યા (Number of Bricks)</h4>
+                        <div class="position-row">
+                            <div class="position-input">
+                                <label>X Position</label>
+                                <div class="position-control">
+                                    <div class="position-control-row">
+                                        <input type="number" id="pos3x" value="849" style="width: 120px;">
+                                        <button class="reset-position-btn" data-field="pos3x" data-value="849">↻</button>
+                                    </div>
+                                    <input type="range" id="pos3x-slider" min="0" max="2000" value="849">
+                                </div>
+                            </div>
+                            <div class="position-input">
+                                <label>Y Position</label>
+                                <div class="position-control">
+                                    <div class="position-control-row">
+                                        <input type="number" id="pos3y" value="1695" style="width: 120px;">
+                                        <button class="reset-position-btn" data-field="pos3y" data-value="1695">↻</button>
+                                    </div>
+                                    <input type="range" id="pos3y-slider" min="0" max="3500" value="1695">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="position-control-group">
+                        <h4>યોગદાન (Donation)</h4>
+                        <div class="position-row">
+                            <div class="position-input">
+                                <label>X Position</label>
+                                <div class="position-control">
+                                    <div class="position-control-row">
+                                        <input type="number" id="pos4x" value="1189" style="width: 120px;">
+                                        <button class="reset-position-btn" data-field="pos4x" data-value="1189">↻</button>
+                                    </div>
+                                    <input type="range" id="pos4x-slider" min="0" max="2000" value="1189">
+                                </div>
+                            </div>
+                            <div class="position-input">
+                                <label>Y Position</label>
+                                <div class="position-control">
+                                    <div class="position-control-row">
+                                        <input type="number" id="pos4y" value="1694" style="width: 120px;">
+                                        <button class="reset-position-btn" data-field="pos4y" data-value="1694">↻</button>
+                                    </div>
+                                    <input type="range" id="pos4y-slider" min="0" max="3500" value="1694">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <button class="btn-reset-position" id="resetAllPositionsBtn">Reset All Positions</button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="preview-container">
+            <div class="certificate-frame">
+                <canvas id="certificateCanvas" width="2480" height="3508"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <!-- WhatsApp Modal -->
+    <div id="whatsappModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Share via WhatsApp</h3>
+                <span class="close">&times;</span>
+            </div>
+            <div class="modal-body">
+                <input type="tel" id="whatsappNumber" placeholder="Enter 10-digit mobile number" maxlength="10">
+            </div>
+            <div class="modal-footer">
+                <button class="btn-cancel">Cancel</button>
+                <button class="btn-share" id="shareNowBtn">Share Now</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const canvas = document.getElementById('certificateCanvas');
+            const ctx = canvas.getContext('2d');
+            const field1Input = document.getElementById('field1');
+            const field3Input = document.getElementById('field3');
+            const field4Input = document.getElementById('field4');
+            
+            // Font controls
+            const commonFontSize = document.getElementById('commonFontSize');
+            const fontSizeValue = commonFontSize.nextElementSibling;
+            const fontColorPicker = document.getElementById('fontColor');
+            
+            // Position controls
+            const pos1x = document.getElementById('pos1x');
+            const pos1y = document.getElementById('pos1y');
+            const pos3x = document.getElementById('pos3x');
+            const pos3y = document.getElementById('pos3y');
+            const pos4x = document.getElementById('pos4x');
+            const pos4y = document.getElementById('pos4y');
+            
+            // Position sliders
+            const pos1xSlider = document.getElementById('pos1x-slider');
+            const pos1ySlider = document.getElementById('pos1y-slider');
+            const pos3xSlider = document.getElementById('pos3x-slider');
+            const pos3ySlider = document.getElementById('pos3y-slider');
+            const pos4xSlider = document.getElementById('pos4x-slider');
+            const pos4ySlider = document.getElementById('pos4y-slider');
+            
+            // Buttons
+            const formDownloadBtn = document.getElementById('formDownloadBtn');
+            const formResetBtn = document.getElementById('formResetBtn');
+            const formResetFontBtn = document.getElementById('formResetFontBtn');
+            const resetAllPositionsBtn = document.getElementById('resetAllPositionsBtn');
+            const whatsappBtn = document.getElementById('whatsappBtn');
+            const shareNowBtn = document.getElementById('shareNowBtn');
+            
+            // WhatsApp Modal elements
+            const whatsappModal = document.getElementById('whatsappModal');
+            const modalClose = document.querySelector('.close');
+            const modalCancel = document.querySelector('.btn-cancel');
+            const whatsappNumber = document.getElementById('whatsappNumber');
+            
+            // Collapsible position controls
+            const positionHeader = document.getElementById('positionHeader');
+            const positionContent = document.getElementById('positionContent');
+            
+            // Load the certificate image
+            const img = new Image();
+            img.crossOrigin = 'Anonymous';
+            img.src = 'certificate.png'; // Replace with your image path
+            
+            img.onload = function() {
+                // Initial draw
+                drawCertificate();
+                
+                // Real-time updates for all fields
+                field1Input.addEventListener('input', function() {
+                    drawCertificate();
+                });
+                field3Input.addEventListener('input', function() {
+                    const brickCount = parseFloat(field3Input.value) || 0;
+                    field4Input.value = (brickCount * 2500).toLocaleString();
+                    drawCertificate();
+                });
+                
+                // Font size change handler
+                commonFontSize.addEventListener('input', function() {
+                    fontSizeValue.textContent = this.value + 'px';
+                    drawCertificate();
+                });
+                
+                // Font color change handler
+                fontColorPicker.addEventListener('input', drawCertificate);
+                
+                // Position input change handlers
+                function setupPositionSync(input, slider) {
+                    input.addEventListener('input', function() {
+                        slider.value = this.value;
+                        drawCertificate();
+                    });
+                    slider.addEventListener('input', function() {
+                        input.value = this.value;
+                        drawCertificate();
+                    });
+                }
+                
+                setupPositionSync(pos1x, pos1xSlider);
+                setupPositionSync(pos1y, pos1ySlider);
+                setupPositionSync(pos3x, pos3xSlider);
+                setupPositionSync(pos3y, pos3ySlider);
+                setupPositionSync(pos4x, pos4xSlider);
+                setupPositionSync(pos4y, pos4ySlider);
+                
+                // Reset individual position buttons
+                document.querySelectorAll('.reset-position-btn').forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        const fieldId = this.getAttribute('data-field');
+                        const defaultValue = this.getAttribute('data-value');
+                        const input = document.getElementById(fieldId);
+                        const slider = document.getElementById(fieldId + '-slider');
+                        
+                        input.value = defaultValue;
+                        slider.value = defaultValue;
+                        drawCertificate();
+                    });
+                });
+                
+                // Reset all positions button
+                resetAllPositionsBtn.addEventListener('click', function() {
+                    const positions = [
+                        {id: 'pos1x', value: '570'},
+                        {id: 'pos1y', value: '1558'},
+                        {id: 'pos3x', value: '849'},
+                        {id: 'pos3y', value: '1695'},
+                        {id: 'pos4x', value: '1189'},
+                        {id: 'pos4y', value: '1694'}
+                    ];
+                    
+                    positions.forEach(pos => {
+                        const input = document.getElementById(pos.id);
+                        const slider = document.getElementById(pos.id + '-slider');
+                        
+                        input.value = pos.value;
+                        slider.value = pos.value;
+                    });
+                    
+                    drawCertificate();
+                });
+                
+                // Toggle position controls
+                positionHeader.addEventListener('click', function() {
+                    positionContent.classList.toggle('show');
+                    this.querySelector('span').textContent = 
+                        positionContent.classList.contains('show') ? '−' : '+';
+                });
+                
+                // Download button click handler
+                function downloadCertificate() {
+                    // Create a temporary canvas with higher resolution
+                    const tempCanvas = document.createElement('canvas');
+                    const tempCtx = tempCanvas.getContext('2d');
+                    
+                    // Set the temporary canvas dimensions
+                    tempCanvas.width = canvas.width;
+                    tempCanvas.height = canvas.height;
+                    
+                    // Draw the current certificate to the temporary canvas
+                    tempCtx.drawImage(img, 0, 0, tempCanvas.width, tempCanvas.height);
+                    
+                    // Set text style
+                    tempCtx.fillStyle = fontColorPicker.value;
+                    tempCtx.textAlign = 'left';
+                    const fontSize = parseInt(commonFontSize.value);
+                    
+                    // Draw Field 1
+                    if (field1Input.value) {
+                        tempCtx.font = `bold ${fontSize}px Arial`;
+                        tempCtx.fillText(field1Input.value, parseInt(pos1x.value), parseInt(pos1y.value));
+                    }
+                    
+                    // Draw Field 3
+                    if (field3Input.value) {
+                        tempCtx.font = `bold ${fontSize}px Arial`;
+                        tempCtx.fillText(field3Input.value, parseInt(pos3x.value), parseInt(pos3y.value));
+                    }
+                    
+                    // Draw Field 4
+                    if (field4Input.value) {
+                        tempCtx.font = `bold ${fontSize}px Arial`;
+                        tempCtx.fillText(field4Input.value, parseInt(pos4x.value), parseInt(pos4y.value));
+                    }
+                    
+                    // Create download link
+                    const link = document.createElement('a');
+                    const fileName = field1Input.value ? 
+                        `${field1Input.value.replace(/\s+/g, '_')}_Matrubhumi_Vandana_Certificate.jpg` : 
+                        'Matrubhumi_Vandana_Certificate.jpg';
+                    link.download = fileName;
+                    link.href = tempCanvas.toDataURL('image/jpeg', 0.9);
+                    link.click();
+                }
+                
+                formDownloadBtn.addEventListener('click', downloadCertificate);
+                
+                // Reset buttons
+                function resetForm() {
+                    field1Input.value = '';
+                    field3Input.value = '';
+                    field4Input.value = '';
+                    drawCertificate();
+                }
+                
+                function resetFontStyle() {
+                    commonFontSize.value = 75;
+                    fontSizeValue.textContent = '75px';
+                    fontColorPicker.value = '#FF0000';
+                    drawCertificate();
+                }
+                
+                function resetAll() {
+                    resetForm();
+                    resetFontStyle();
+                    resetAllPositionsBtn.click();
+                }
+                
+                formResetBtn.addEventListener('click', resetAll);
+                formResetFontBtn.addEventListener('click', resetFontStyle);
+                
+                // WhatsApp Share functionality - Simplified version
+                whatsappBtn.addEventListener('click', async function() {
+                    // First copy the certificate image to clipboard
+                    try {
+                        // Create a temporary canvas to get the image data
+                        const tempCanvas = document.createElement('canvas');
+                        const tempCtx = tempCanvas.getContext('2d');
+                        tempCanvas.width = canvas.width;
+                        tempCanvas.height = canvas.height;
+                        
+                        // Draw the current certificate to the temporary canvas
+                        tempCtx.drawImage(img, 0, 0, tempCanvas.width, tempCanvas.height);
+                        
+                        // Set text style
+                        tempCtx.fillStyle = fontColorPicker.value;
+                        tempCtx.textAlign = 'left';
+                        const fontSize = parseInt(commonFontSize.value);
+                        
+                        // Draw Field 1
+                        if (field1Input.value) {
+                            tempCtx.font = `bold ${fontSize}px Arial`;
+                            tempCtx.fillText(field1Input.value, parseInt(pos1x.value), parseInt(pos1y.value));
+                        }
+                        
+                        // Draw Field 3
+                        if (field3Input.value) {
+                            tempCtx.font = `bold ${fontSize}px Arial`;
+                            tempCtx.fillText(field3Input.value, parseInt(pos3x.value), parseInt(pos3y.value));
+                        }
+                        
+                        // Draw Field 4
+                        if (field4Input.value) {
+                            tempCtx.font = `bold ${fontSize}px Arial`;
+                            tempCtx.fillText(field4Input.value, parseInt(pos4x.value), parseInt(pos4y.value));
+                        }
+                        
+                        // Convert canvas to blob
+                        tempCanvas.toBlob(async function(blob) {
+                            try {
+                                // Copy the blob to clipboard
+                                await navigator.clipboard.write([
+                                    new ClipboardItem({
+                                        'image/png': blob
+                                    })
+                                ]);
+                                
+                                // Show modal for WhatsApp number input
+                                whatsappModal.style.display = 'block';
+                                
+                            } catch (err) {
+                                console.error('Failed to copy image: ', err);
+                                alert('Failed to copy certificate to clipboard. Please try downloading and sharing manually.');
+                            }
+                        }, 'image/png');
+                    } catch (err) {
+                        console.error('Error preparing image for sharing: ', err);
+                        alert('Error preparing certificate for sharing. Please try downloading and sharing manually.');
+                    }
+                });
+                
+                // WhatsApp share handler
+                shareNowBtn.addEventListener('click', function() {
+                    const phoneNumber = whatsappNumber.value.trim();
+                    if (phoneNumber.length === 10 && /^\d+$/.test(phoneNumber)) {
+                        // Open WhatsApp with the phone number
+                        const whatsappUrl = `https://web.whatsapp.com/send?phone=91${phoneNumber}`;
+                        
+                        // Check if WhatsApp is already open
+                        let whatsappWindow = window.open('', 'WhatsAppWindow');
+                        if (!whatsappWindow || whatsappWindow.closed) {
+                            whatsappWindow = window.open(whatsappUrl, 'WhatsAppWindow');
+                        } else {
+                            whatsappWindow.location.href = whatsappUrl;
+                        }
+                        
+                        // Close modal
+                        whatsappModal.style.display = 'none';
+                        whatsappNumber.value = '';
+                        
+                        // Show message to user
+                        alert('Certificate copied to clipboard. Please paste it in the WhatsApp chat.');
+                    } else {
+                        alert('Please enter a valid 10-digit mobile number');
+                    }
+                });
+                
+                modalClose.addEventListener('click', function() {
+                    whatsappModal.style.display = 'none';
+                });
+                
+                modalCancel.addEventListener('click', function() {
+                    whatsappModal.style.display = 'none';
+                });
+                
+                // Close modal when clicking outside
+                window.addEventListener('click', function(event) {
+                    if (event.target === whatsappModal) {
+                        whatsappModal.style.display = 'none';
+                    }
+                });
+            };
+            
+            function drawCertificate() {
+                // Clear canvas
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                
+                // Draw the certificate image
+                ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+                
+                // Set text style
+                ctx.fillStyle = fontColorPicker.value;
+                ctx.textAlign = 'left';
+                const fontSize = parseInt(commonFontSize.value);
+                
+                // Draw Field 1
+                if (field1Input.value) {
+                    ctx.font = `bold ${fontSize}px Arial`;
+                    ctx.fillText(field1Input.value, parseInt(pos1x.value), parseInt(pos1y.value));
+                }
+                
+                // Draw Field 3
+                if (field3Input.value) {
+                    ctx.font = `bold ${fontSize}px Arial`;
+                    ctx.fillText(field3Input.value, parseInt(pos3x.value), parseInt(pos3y.value));
+                }
+                
+                // Draw Field 4
+                if (field4Input.value) {
+                    ctx.font = `bold ${fontSize}px Arial`;
+                    ctx.fillText(field4Input.value, parseInt(pos4x.value), parseInt(pos4y.value));
+                }
+            }
+        });
+    </script>
+</body>
+</html>
